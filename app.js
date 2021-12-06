@@ -23,8 +23,7 @@ app.post("/", function(req, res) {
         service: "gmail",
         auth: {
             /* Don't forget to head over to https://myaccount.google.com/lesssecureapps and switch it on */
-            user: "",
-            /* Write Email (Must Be Gmail) */
+            user: "", /* Write Email (Must Be Gmail) */
             pass: "" /* Write PAssword */
         },
         tls: {
@@ -33,13 +32,10 @@ app.post("/", function(req, res) {
     });
 
     const mailInfo = {
-        from: "",
-        /* Write Email */
+        from: "", /* Write Email */
         to: email,
-        subject: "Thanks",
-        /* Email Subject */
-        text: "Thanks for subscribing to our newsletter",
-        /* Email Text */
+        subject: "Thanks", /* Email Subject */
+        text: "Thanks for subscribing to our newsletter", /* Email Text */
         attachments: [{
             filename: "logo.png",
             path: __dirname + "/logo.png"
@@ -48,13 +44,21 @@ app.post("/", function(req, res) {
 
     transporter.sendMail(mailInfo, (error, info) => {
         if (error) {
+            res.redirect("/failure");
             console.log("Error", error);
         } else {
+            res.redirect("/success");
             console.log("Info", info)
         }
     });
+});
 
-    res.redirect("/");
+app.get("/success", function(req, res) {
+    res.render("success");
+});
+
+app.get("/failure", function(req, res) {
+    res.render("failure");
 });
 
 
